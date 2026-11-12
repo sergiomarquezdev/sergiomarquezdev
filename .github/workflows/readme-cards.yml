@@ -1,0 +1,69 @@
+name: Update README cards
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/readme-cards.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: readme-cards
+  cancel-in-progress: true
+
+env:
+  # Optional STATS_TOKEN secret: a PAT with read:user + repo scopes counts private
+  # repos and commits. Without it the public GITHUB_TOKEN is used (public data only).
+  STATS_COMMON: hide_border=true&bg_color=00000000
+  STATS_CARD: show_icons=true&count_private=true&hide=issues,contribs
+  LANGS_CARD: layout=compact&langs_count=6&hide=jupyter%20notebook,html,css,php,batchfile,dockerfile
+
+jobs:
+  cards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Stats (dark)
+        uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: stats
+          options: ${{ env.STATS_CARD }}&${{ env.STATS_COMMON }}&theme=material-palenight
+          path: profile/stats-dark.svg
+          token: ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Stats (light)
+        uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: stats
+          options: ${{ env.STATS_CARD }}&${{ env.STATS_COMMON }}&theme=default
+          path: profile/stats-light.svg
+          token: ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Top languages (dark)
+        uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: top-langs
+          options: ${{ env.LANGS_CARD }}&${{ env.STATS_COMMON }}&theme=material-palenight
+          path: profile/top-langs-dark.svg
+          token: ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Top languages (light)
+        uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: top-langs
+          options: ${{ env.LANGS_CARD }}&${{ env.STATS_COMMON }}&theme=default
+          path: profile/top-langs-light.svg
+          token: ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Commit cards
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add profile/*.svg
+          git commit -m "chore: update readme cards" || exit 0
+          git push
