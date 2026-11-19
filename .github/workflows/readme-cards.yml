@@ -26,10 +26,10 @@ jobs:
   cards:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Stats (dark)
-        uses: stats-organization/github-readme-stats-action@v2
+        uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
         with:
           card: stats
           options: ${{ env.STATS_CARD }}&${{ env.STATS_COMMON }}&theme=material-palenight
@@ -37,7 +37,7 @@ jobs:
           token: ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Stats (light)
-        uses: stats-organization/github-readme-stats-action@v2
+        uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
         with:
           card: stats
           options: ${{ env.STATS_CARD }}&${{ env.STATS_COMMON }}&theme=default
@@ -45,7 +45,7 @@ jobs:
           token: ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Top languages (dark)
-        uses: stats-organization/github-readme-stats-action@v2
+        uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
         with:
           card: top-langs
           options: ${{ env.LANGS_CARD }}&${{ env.STATS_COMMON }}&theme=material-palenight
@@ -53,7 +53,7 @@ jobs:
           token: ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Top languages (light)
-        uses: stats-organization/github-readme-stats-action@v2
+        uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
         with:
           card: top-langs
           options: ${{ env.LANGS_CARD }}&${{ env.STATS_COMMON }}&theme=default
